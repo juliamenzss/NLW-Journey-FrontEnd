@@ -1,0 +1,26 @@
+### list activities
+GET http://localhost:3000/activities
+
+### get activity
+GET http://localhost:3000/activities/task_zvg7b9e8H-q6Causb8z5_
+
+### create activity
+POST http://localhost:3000/activities
+Content-Type: application/json
+
+{
+    "title": "Levar timoteo no vet",
+    "description":"Sexta feira as 16:30",
+    "status":"PENDENT"
+}
+
+### update activity
+PATCH http://localhost:3000/activities/task_zvg7b9e8H-q6Causb8z5_
+Content-Type: application/json
+
+{
+    "title": "Levar gatinho no vet"
+}
+
+### delete activity
+DELETE http://localhost:3000/activities/task_zvg7b9e8H-q6Causb8z5_

@@ -1,0 +1,27 @@
+### list users
+GET http://localhost:3000/users
+
+### get user
+GET http://localhost:3000/users/1
+
+### create user
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "name": "Aluisio Silva",
+    "email":"joao@test.com",
+    "password": "test1234",
+    "dateOfBirth": "1998-01-01"
+}
+
+### update user
+PATCH http://localhost:3000/users/user_-JKNceM24ks-cD00cz0
+Content-Type: application/json
+
+{
+    "name": "Julia Matos"
+}
+
+### delete user
+DELETE http://localhost:3000/users/user_Ep2J27IQ7e_8J2_zRdm4A
