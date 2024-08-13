@@ -1,40 +1,61 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateActivityDto } from './dto/create-activity.dto';
 import { UpdateActivityDto } from './dto/update-activity.dto';
-import { Repository } from 'typeorm';
-import { Activity } from './entities/activity.entity';
-import { InjectRepository } from '@nestjs/typeorm';
+import { InjectModel } from '@nestjs/mongoose';
+import { Activity, ActivityDocument } from './schemas/actvity.schema';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class ActivitiesService {
   constructor(
-    @InjectRepository(Activity)
-    private readonly repository: Repository<Activity>
+    @InjectModel(Activity.name) private activityModel: Model<ActivityDocument>,
   ) {}
 
-  create(dto: CreateActivityDto) {
-    const activity = this.repository.create(dto);
-    return this.repository.save(activity);
+  async create(dto: CreateActivityDto): Promise<Activity> {
+    try {
+      const activity = this.activityModel.create(dto);
+      return (await activity).save();
+    } catch (error) {
+      if (error.name === 'ValidationError')
+        throw new BadRequestException('Validation Error', error);
+    }
+    throw new BadRequestException('Error creating activity');
   }
 
-  findAll() {
-    return this.repository.find();
+  async findAll(): Promise<Activity[]> {
+    return this.activityModel.find().populate('userId').exec();
   }
 
-  findOne(id: string) {
-    return this.repository.findOneBy({ id });
+  async findOne(id: string): Promise<Activity> {
+    const activity = await this.activityModel
+      .findById(id)
+      .populate('userId')
+      .exec();
+    if (!activity) throw new NotFoundException('Activity not found');
+    return activity;
   }
 
-  async update(id: string, dto: UpdateActivityDto) {
-    const activity = await this.repository.findOneBy({ id });
-    if (!activity) return null;
-    this.repository.merge(activity, dto);
-    return this.repository.save(activity);
+  async update(id: string, dto: UpdateActivityDto): Promise<Activity> {
+    try {
+      const activity = await this.activityModel
+        .findByIdAndUpdate(id, dto, { new: true })
+        .populate('userId')
+        .exec();
+      if (!activity) throw new NotFoundException('Activity not found');
+      return activity;
+    } catch (error) {
+      if (error.name === 'ValidationError')
+        throw new BadRequestException('Validation error', error);
+    }
+    throw new BadRequestException('Error update activity');
   }
 
   async remove(id: string) {
-    const activity = await this.repository.findOneBy({ id });
-    if (!activity) return null;
-    return this.repository.remove(activity);
+    const activity = await this.activityModel
+      .findByIdAndDelete(id)
+      .populate('userId')
+      .exec();
+    if (!activity) throw new NotFoundException('Activity not found');
+    return activity;
   }
 }

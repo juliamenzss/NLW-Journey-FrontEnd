@@ -1,0 +1,27 @@
+### create new user
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "name": "Joao Alberto",
+    "email":"1234@test.com",
+    "password": "test1234"
+}
+
+### login 
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email":"c@test.com",
+    "password": "test1234"
+}
+
+### me 
+POST http://localhost:3000/auth/me
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NmE4ZTgxNmI0ODE0MmRmYjVjYzRiNTkiLCJuYW1lIjoiSm9hbyBBbGJlcnRvIiwiZW1haWwiOiJjQHRlc3QuY29tIiwiaWF0IjoxNzIyMzU1OTk1LCJleHAiOjE3MjI5NjA3OTUsImF1ZCI6InVzZXJzIiwiaXNzIjoibG9naW4ifQ.t17QrNs5pBBq0bvwArDklab6ak6PPJHonjzHzqSsyIE"
+}
+

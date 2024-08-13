@@ -1,13 +1,17 @@
 import { Module } from '@nestjs/common';
 import { ActivitiesService } from './activities.service';
 import { ActivitiesController } from './activities.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Activity } from './entities/activity.entity';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Activity, ActivitySchema } from './schemas/actvity.schema';
+import { User, UserSchema } from 'src/users/schemas/user.schema';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Activity])],
+  imports: [
+    MongooseModule.forFeature([{ name: Activity.name, schema: ActivitySchema }]),
+    // MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+  ],
   controllers: [ActivitiesController],
   providers: [ActivitiesService],
-  // exports: [ActivitiesService]
+  exports: []
 })
 export class ActivitiesModule {}

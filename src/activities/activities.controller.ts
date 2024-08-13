@@ -20,14 +20,12 @@ export class ActivitiesController {
   @Get(':id')
   async findOne(@Param('id') id: string) {
     const activity = await this.activitiesService.findOne(id);
-    if(!activity) throw new NotFoundException();
     return activity;
   }
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateActivityDto: UpdateActivityDto) {
     const activity = await this.activitiesService.update(id, updateActivityDto);
-    if(!activity) throw new NotFoundException();
     return activity;
   }
 
@@ -35,6 +33,5 @@ export class ActivitiesController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     const activity = await this.activitiesService.remove(id);
-    if(!activity) throw new NotFoundException();
   }
 }

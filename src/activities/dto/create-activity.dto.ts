@@ -1,5 +1,4 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
-// import { ActivitiesStatus } from "../enum/activities-status.enum";
+import { IsEnum, IsMongoId, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class CreateActivityDto {
     
@@ -11,8 +10,10 @@ export class CreateActivityDto {
     @IsString()
     description: string;
 
-    @IsString()
     @IsOptional()
+    @IsEnum(['PENDING', 'IN_PROGRESS', 'COMPLETED'])
     status?: string;
 
+    @IsMongoId({ message: 'userID must be a valid MongoDB ObjectId' })
+    userId: string;
 }
